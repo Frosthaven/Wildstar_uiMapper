@@ -46,6 +46,7 @@ Some features I'd like to add when I get the time:
     end
     ```
    4. You are now ready to use uiMapper!
+
 ## Getting Started
 uiMapper works by registering your addon first, and then passing the workspace back to you when the ui is ready to be built. It does this so that saved variables are in place before the options panel is constructed. Let's look at the bread and butter call, which should be placed at the bottom of your addon's **OnLoad** event.
 
