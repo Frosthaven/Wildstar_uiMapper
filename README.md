@@ -10,7 +10,7 @@ Some features I'd like to add when I get the time:
    - overall code improvements and cleanup
 
 ## Screenshots
-![Full Panel](http://puu.sh/lmDYf/43434ecf03.png)
+![Full Panel](http://puu.sh/lvKma/824f4029d9.png)
 ![Smaller Panel](http://puu.sh/lvE29/e8aa996f28.png)
 
 ## Installation
