@@ -9,6 +9,10 @@ Some features I'd like to add when I get the time:
    - sliders
    - overall code improvements and cleanup
 
+## Screenshots
+![Full Panel](http://puu.sh/lmDYf/43434ecf03.png)
+![Smaller Panel](http://puu.sh/lvE29/e8aa996f28.png)
+
 ## Installation
 1. Unzip a release of uiMapper into your addon's folder. The release consists of two files, **core.lua** and **panel.xml**
    - The folder layout should be
