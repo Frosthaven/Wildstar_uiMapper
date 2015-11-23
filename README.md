@@ -7,6 +7,7 @@ Currently, uiMapper is in developer pre-release. Although it has been tested in 
 Some features I'd like to add when I get the time:
    - Providing default values for easy reset of addon options
    - sliders
+   - Changing dropdown boxes into grid windows
    - overall code improvements and cleanup
 
 ## Screenshots
