@@ -1,3 +1,5 @@
+local MAJOR = "uiMapper:0.6"
+MINOR = 1
 --[[-------------------------------------------------------------------------------------------
 	Client Lua Script for _uiMapper
 
@@ -21,8 +23,7 @@
 
 -- LOADING ------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
-local MAJOR, MINOR = "uiMapper:0.5", 1
-local Lib = Apollo.GetPackage("uiMapper:0.5") and Apollo.GetPackage("uiMapper:0.5").tPackage or {}
+local Lib = Apollo.GetPackage(MAJOR) and Apollo.GetPackage(MAJOR).tPackage or {}
 if Lib and (Lib._VERSION or 0) >= MINOR then
 	return -- no upgrade is needed
 end
@@ -53,6 +54,10 @@ function Lib:new(params)
 		author    = params.author,
 		version   = params.version,
 		slash     = params.slash,
+		callbacks = {
+			onshow = params.onshow,
+			onhide = params.onhide,
+		},
 	}
 
     return o
@@ -99,7 +104,6 @@ function Lib:OnDocLoaded()
 			slashLabel:Invoke()
 			Apollo.RegisterSlashCommand(self.meta.slash, "OnSlashCommand", self)
 		end
-
 		if self.callback and type(self.callback) == 'function' then
 			--set up the workspace for this ui
 			self.callback(self)
@@ -110,6 +114,20 @@ end
 -- CONTROL EVENTS -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 --main panel
+function Lib:OnMainWindowHide(wndHandle, wndControl)
+	if wndControl:GetName() ~= self.wndMain:GetName() then return end
+	if self.meta.callbacks.onhide and type(self.meta.callbacks.onhide) == 'function' then
+		self.meta.callbacks.onhide(self)
+	end
+end
+
+function Lib:OnMainWindowShow(wndHandle, wndControl)
+	if wndControl:GetName() ~= self.wndMain:GetName() then return end
+	if self.meta.callbacks.onshow and type(self.meta.callbacks.onshow) == 'function' then
+		self.meta.callbacks.onshow(self)
+	end
+end
+
 function Lib:OnSlashCommand()
 	if self.wndMain:IsVisible() then
 		self.wndMain:Close()
@@ -136,7 +154,7 @@ function Lib:DisablePanels()
 end
 
 function Lib:EnablePanels()
-	self.wndMain:FindChild("Blocker"):Close()
+	self.wndMain:FindChild("Blocker"):Show(false, true)
 	self.wndMain:FindChild("ContentRegion"):Enable(true)
 end
 
@@ -275,7 +293,7 @@ function Lib:OnColorButtonClick(wndHandle)
 	self:OnColorPickerChange(picker, picker, color)
 
 	--show the popup
-	self.wndMain:FindChild("PopupColorPicker"):Invoke()
+	self.wndMain:FindChild("PopupColorPicker"):Show(true,true)
 end
 
 function Lib:OnColorPickerCancel(wndHandle)
