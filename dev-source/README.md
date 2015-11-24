@@ -85,7 +85,7 @@ function myaddon:OnLoad()
 end
 ```
 
-But remember, chaining methods is merely optional! The following will accomplish the same thing:
+But remember, chaining methods is merely optional (more on this below)! The following will accomplish the same thing:
 ```lua
  --inside of OnLoad
  self.ui = uiMapper:new({
