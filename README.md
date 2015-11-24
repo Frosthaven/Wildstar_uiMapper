@@ -76,22 +76,15 @@ function myaddon:OnLoad()
 	end)
 end
 ```
-One common practice is to call a builder function from inside the workspace and pass around the ui table to separate code and design
-```lua
- self.ui = uiMapper:new({
-    --etc
- }):build(function(ui)
-    --this is your ui workspace
-    myaddon:BuildUI(ui)
- end)
-```
 
 But remember, chaining methods is merely optional! The following will accomplish the same thing:
 ```lua
+ --inside of OnLoad
  self.ui = uiMapper:new({
     --etc
  })
 
+ --and then somewhere else in your code
  self.ui:build(function(ui) {
     --this is your ui workspace
  })
