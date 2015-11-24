@@ -59,27 +59,27 @@ uiMapper works by registering your addon first, and then passing the workspace b
 function myaddon:OnLoad()
     --etc
     
-	local uiMapper = Apollo.GetPackage("uiMapper:0.5").tPackage
-	--change "uiMapper:0.5" to whatever you used in your dependancy check
-	--which is what is found at the top of core.lua
-	
-	self.ui  = uiMapper:new({
-		container = self,                     --this is where your addon settings are stored
-		name      = "uiMapper Example",       --the name of the addon
-		author    = "Frosthaven",             --the author of the addon
-		version   = "1.1-dev",                --any version information about your addon
-		slash     = "uiconfig"                --optional slash command to open the ui panel
+  local uiMapper = Apollo.GetPackage("uiMapper:0.5").tPackage
+  --change "uiMapper:0.5" to whatever you used in your dependancy check
+  --which is what is found at the top of core.lua
+  
+  self.ui  = uiMapper:new({
+    container = self,                     --this is where your addon settings are stored
+    name      = "uiMapper Example",       --the name of the addon
+    author    = "Frosthaven",             --the author of the addon
+    version   = "1.1-dev",                --any version information about your addon
+    slash     = "uiconfig"                --optional slash command to open the ui panel
     onshow    = function(ui)
       --config panel opened               --optional onshow and onhide events
     end,
     onhide    = function(ui)
       --config panel closed
     end,
-	}):build(function(ui)
-	    --this is your ui workspace
-	    --refer to methods below for
-	    --how to build an interface
-	end)
+  }):build(function(ui)
+      --this is your ui workspace
+      --refer to methods below for
+      --how to build an interface
+  end)
 end
 ```
 One common practice is to call a builder function from inside the workspace and pass around the ui table to separate code and design
