@@ -101,6 +101,7 @@ But remember, chaining methods is merely optional (more on this below)! The foll
 And now with the magic function call done and our UI ready to be built, on to...
 
 ## METHODS: An Introduction
+All builder methods in the API listed below should be placed inside of your ui workspace as demonstrated above.
 Methods in uiMapper support chaining. All of these are the same:
 ```lua
 ui:category("Another Page")
