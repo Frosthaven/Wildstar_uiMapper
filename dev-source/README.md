@@ -88,11 +88,23 @@ One common practice is to call a builder function from inside the workspace and 
 ```lua
  self.ui = uiMapper:new({
     --etc
- }) build(function(ui)
+ }):build(function(ui)
     --this is your ui workspace
     myaddon:BuildUI(ui)
  end)
 ```
+
+But remember, chaining methods is merely optional! The following will accomplish the same thing:
+```lua
+ self.ui = uiMapper:new({
+    --etc
+ })
+
+ self.ui:build(function(ui) {
+    --this is your ui workspace
+ })
+```
+
 And now with the magic function call done and our UI ready to be built, on to...
 
 ## METHODS: An Introduction
