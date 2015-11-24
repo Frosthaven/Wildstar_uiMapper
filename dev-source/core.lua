@@ -558,7 +558,7 @@ function Lib:combo(params)
 			--lets set the initial button text to the mapped value's name
 			for k, v in pairs(self.choices[params.choices]) do
 				--if there is no value, then set the value to the label
-				if not v[2] then v[2] = v[1] end
+				if v[2] == nil then v[2] = v[1] end
 
 				--is this entry the current set value?
 				if (v[2] == mValue) then
