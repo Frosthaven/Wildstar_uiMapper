@@ -140,7 +140,7 @@ This method creates a note on the page. Notes can be any string length and will 
 ui:check({
    label = "Enable Crit Notifications",
    map   = "enableCritNotifications",
-   onchange = function(checkbox)
+   onchange = function(wndControlCheckbox)
       --the checkbox option has changed
    end,
 })
@@ -155,7 +155,7 @@ This method creates a checkbox in the config panel, and supports the onchange pa
 ui:input({
    label = "Custom Harvesting Text",
    map   = "customHarvestText",
-   onchange = function(checkbox)
+   onchange = function(wndControlInputBox)
       --the text in the input box has changed
    end,
 })
@@ -169,7 +169,7 @@ This method creates a text input box in the config panel, and supports the oncha
 --provides the button wndControl
 ui:button({
    label = "Enable Crit Notifications",
-   onclick = function(button)
+   onclick = function(wndControlButton)
       --the button was clicked
    end,
 })
@@ -196,13 +196,13 @@ ui:combo({
    label   = "What's your favorite fruit color?",
    choices = "fruit"
    map     = "selectedColor",
-   onitemadded = function(entry)
+   onitemadded = function(wndControlItem)
       --an entry from your choice table was added
    end,
-   onpopulated = function(scrollList)
+   onpopulated = function(wndControlList)
       --all entries from your choice table have been added
    end,
-   onchange = function(checkbox)
+   onchange = function(wndControlButton)
       --a dropdown item was chosen
    end,
 })
@@ -218,7 +218,7 @@ ui:color({
    map    = "theColorPicked",
    format = "hex",            --hex "FFFFFF"   rgba {r=255,g=255,b=255,a=1}   table {255, 255, 255,1)
    dec    = true,             --numbers will go from 0-1 instead of 0-255
-   onchange = function(button)
+   onchange = function(wndControlButton)
       --the user has selected a color from the color picker
    end,
 })
