@@ -281,10 +281,23 @@ function Lib:OnColorButtonClick(wndHandle)
 	local data = self:LookupMap(map)
 	local swatch = self.wndMain:FindChild(self.conventions.controlPrefix .. map):FindChild("Inner")
 	local picker = self.wndMain:FindChild("ColorPicker")
+	local slider = self.wndMain:FindChild("PopupColorPicker"):FindChild("FillOpacitySlider")
 
 	self.useColorMap = map
 
 	--prepare the popup
+	local opacity = swatch:GetBGOpacity()
+	slider:SetValue(opacity*100)
+	self:OnFillOpacityChanged(slider, slider, opacity*100)
+
+	if data.alpha and data.format ~= 'hex' then
+		self.wndMain:FindChild("PopupColorPicker:OpacitySlider"):Show(true, true)
+		self:GrowColorPicker()
+	else
+		self.wndMain:FindChild("PopupColorPicker:OpacitySlider"):Show(false, true)
+		self:ShrinkColorPicker()
+	end
+
 	self.wndMain:FindChild("PopupColorPicker:label"):SetText(data.label)
 
 	--set the dialogue colors using the button swatch
@@ -360,17 +373,20 @@ function Lib:OnColorPickerApply(wndHandle, wndControl)
 	local data   = self:LookupMap(map)
 	local color  = wndHandle:GetParent():FindChild("ColorPreview:Inner"):GetBGColor()
 	local swatch = self.wndMain:FindChild(self.conventions.controlPrefix .. self.useColorMap):FindChild("Inner")
+	local opacity = self.wndMain:FindChild("PopupColorPicker"):FindChild("FillOpacitySlider"):GetValue()/100
+
 	--color here is in dec format {1, 1, 1, 1}
 	swatch:SetBGColor(color)
+	swatch:SetBGOpacity(opacity)
 
 	--which format did we want?
 	local returnColor
 	if data.format == 'hex' then
 		returnColor = wndHandle:GetParent():FindChild("Hex_EditBox"):GetText()
 	elseif data.format == 'rgba' then
-		returnColor = {r=color.r, g=color.g, b=color.b, a=color.a}
+		returnColor = {r=color.r, g=color.g, b=color.b, a=opacity}
 	elseif data.format == 'table' then
-		returnColor = {[1]=color.r, [2]=color.g, [3]=color.b, [4]=color.a}
+		returnColor = {[1]=color.r, [2]=color.g, [3]=color.b, [4]=opacity}
 	end
 
 	--are we using decimal values?
@@ -393,6 +409,30 @@ function Lib:OnColorPickerApply(wndHandle, wndControl)
 	if data.callbacks.onchange and type(data.callbacks.onchange) == 'function' then
 		data.callbacks.onchange(swatch)
 	end
+end
+
+function Lib:OnFillOpacityChanged(wndHandle, wndControl, fNewValue)
+	local swatch  = wndHandle:GetParent():GetParent():FindChild("ColorPreview:Inner")
+	local editbox = wndHandle:GetParent():GetParent():FindChild("FillOpacityEditbox")
+	swatch:SetBGOpacity(fNewValue/100, 0.0)
+	editbox:SetText(math.floor(fNewValue))
+end
+
+function Lib:OnFillOpacityEditChanged(wndHandle, wndControl)
+	local slider = self.wndMain:FindChild("PopupColorPicker"):FindChild("FillOpacitySlider")
+	local value
+	local numType = type(tonumber(wndControl:GetText()))
+	if numType == 'number' then
+		value = tonumber(wndControl:GetText())
+		if value > 100 then
+			value = 100
+		elseif value < 0 then
+			value = 0
+		end
+	else
+		value = 0
+	end
+	slider:SetValue(value)
 end
 
 -- EXTERNAL BUILDER METHODS -------------------------------------------------------------------
@@ -617,7 +657,12 @@ function Lib:color(params)
 		end
 
 		--initialize the control
-		swatch:SetBGColor({tonumber(rgba.r), tonumber(rgba.g), tonumber(rgba.b) ,rgba.a})
+		swatch:SetBGColor({tonumber(rgba.r), tonumber(rgba.g), tonumber(rgba.b) ,1})
+		if params.alpha then
+			swatch:SetBGOpacity(rgba.a)
+		else
+			swatch:SetBGOpacity(1)
+		end
 		label:SetText(params.label)
 
 		if (params.map) then
@@ -630,6 +675,7 @@ function Lib:color(params)
 				label  = params.label,
 				value  = mValue,
 				dec    = params.dec,
+				alpha  = params.alpha,
 				format = params.format or dFormat,
 				color  = rgba,
 				callbacks = {
@@ -658,6 +704,14 @@ end
 
 -- INTERNAL BUILDER METHODS -------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
+function Lib:ShrinkColorPicker()
+	self.wndMain:FindChild("PopupColorPicker"):SetAnchorOffsets(-418, 99, -100, 470)
+end
+
+function Lib:GrowColorPicker()
+	self.wndMain:FindChild("PopupColorPicker"):SetAnchorOffsets(-418, 90, -100, 498)
+end
+
 function Lib:ShrinkPanel()
 	--shrink the options panel to a smaller frame
 	self.wndMain:FindChild("NavScroller"):Show(false, true)

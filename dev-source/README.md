@@ -232,12 +232,19 @@ ui:color({
    map    = "theColorPicked",
    format = "hex",            --hex "FFFFFF"   rgba {r=255,g=255,b=255,a=1}   table {255, 255, 255,1)
    dec    = true,             --numbers will go from 0-1 instead of 0-255
+   alpha  = true,             --enable the alpha channel for this color
    onchange = function(wndControlButton)
       --the user has selected a color from the color picker
    end,
 })
 ```
-This method creates a color picker button the user can use to select a color from. the format will be auto-detected from your mapped variable. The dec parameter is also optional, and will assume false unless present. Best practices suggest picking a format you want to work with and not mixing and matching them as you update your addon, but the optional format parameter can ensure you get a specific format back in most cases.
+This method creates a color picker button the user can use to select a color from. The format will be auto-detected from your mapped variable.
+
+The optional dec parameter defaults to false unless set to true, and formats the color levels between 0-1 instead of 0-255.
+
+Best practices suggest picking a format you want to work with and not mixing and matching them as you update your addon, but the optional format parameter can ensure you get a specific format back in most cases.
+
+The optional alpha parameter defaults to false unless set to true, and enables an alpha channel slider for the color. This parameter will be ignored if you are using hex color format.
 
 ---
 ### :slider(```{table}```)
