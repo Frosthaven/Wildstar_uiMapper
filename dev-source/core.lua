@@ -142,6 +142,7 @@ function Lib:OnWindowMouseDown(wndHandle)
 end
 
 function Lib:OnWindowClose(wndHandle)
+	self:CloseAllPopups()
 	self.wndMain:Close()
 end
 
@@ -189,7 +190,7 @@ function Lib:OnNavChange(wndHandle)
 
 	self:ClearOtherNavigation(categoryName)
 	pageContainer:Invoke()
-	--todo self:CloseAllPopups()
+	self:CloseAllPopups()
 end
 
 --checkbox
@@ -951,6 +952,12 @@ function Lib:PrepareWindow()
 	if self.meta.defaults then
 		self.wndMain:FindChild('DefaultsButton'):Show(true, true)
 	end
+end
+
+function Lib:CloseAllPopups()
+	self.wndMain:FindChild("PopupColorPicker"):Close()
+	self.wndMain:FindChild("PopupMultiChoice"):Close()
+	self.wndMain:FindChild("PopupRestoreDefaults"):Close()
 end
 
 function Lib:log(msg)
