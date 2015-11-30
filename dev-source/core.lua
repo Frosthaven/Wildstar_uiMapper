@@ -56,8 +56,9 @@ function Lib:new(params)
 		version   = params.version,
 		slash     = params.slash,
 		callbacks = {
-			onshow = params.onshow,
-			onhide = params.onhide,
+			onshow    = params.onshow,
+			onhide    = params.onhide,
+			ondefault = params.ondefault,
 		},
 	}
 
@@ -175,6 +176,11 @@ function Lib:OnRestoreDefaultsConfirm(wndHandle)
 	for k, v in pairs(self.mappings) do
 		--does a default exist for this value?
 		self:RestoreDefaultFromMap(k)
+	end
+
+	--run any callbacks
+	if self.meta.callbacks.ondefault and type(self.meta.callbacks.ondefault) == 'function' then
+		self.meta.callbacks.ondefault(self)
 	end
 
 	--reload the ui
