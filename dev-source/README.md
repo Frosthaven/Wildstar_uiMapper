@@ -269,7 +269,10 @@ Not yet implimented
 
 ---
 ## Examples
-Currently, uiMapper is used in [FrostMod Threat Ball](http://www.curse.com/ws-addons/wildstar/238126-frostmod-threatball#t1:other-downloads). Other examples will be added here over time.
+## Examples
+Currently, uiMapper is used in the following addons:
+[FrostMod Threat Ball](http://www.curse.com/ws-addons/wildstar/238126-frostmod-threatball)
+[FrostMod CombatText](http://www.curse.com/ws-addons/wildstar/238429-frostmod-combattext)
 
 ## Developers
 Frosthaven ([Frosthaven on Twitter](http://twitter.com/thefrosthaven))
