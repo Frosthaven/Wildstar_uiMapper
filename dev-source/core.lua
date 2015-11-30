@@ -1,4 +1,4 @@
-local MAJOR = "uiMapper:0.6"
+local MAJOR = "uiMapper:0.7"
 MINOR = 1
 --[[-------------------------------------------------------------------------------------------
 	Client Lua Script for _uiMapper
@@ -50,6 +50,7 @@ function Lib:new(params)
     --register the initial meta data
     o.meta = {
     	container = params.container,
+    	defaults  = params.defaults,
     	name      = params.name,
 		author    = params.author,
 		version   = params.version,
@@ -156,6 +157,27 @@ end
 function Lib:EnablePanels()
 	self.wndMain:FindChild("Blocker"):Show(false, true)
 	self.wndMain:FindChild("ContentRegion"):Enable(true)
+end
+
+--defaults
+function Lib:OnRestoreDefaultsButtonClick(wndHandle)
+	wndHandle:GetParent():FindChild("PopupRestoreDefaults"):Show(true, true)
+end
+
+function Lib:OnRestoreDefaultsCancel(wndHandle)
+	wndHandle:GetParent():Close()
+end
+
+function Lib:OnRestoreDefaultsConfirm(wndHandle)
+	--set our mapped values to our default values
+
+	for k, v in pairs(self.mappings) do
+		--does a default exist for this value?
+		self:RestoreDefaultFromMap(k)
+	end
+
+	--reload the ui
+	RequestReloadUI()
 end
 
 --navigation
@@ -831,6 +853,23 @@ function Lib:GetMapped(map)
 	return v
 end
 
+function Lib:GetDefault(map)
+	local v = self.meta.defaults
+	for w in string.gfind(map, "[%w_]+") do
+		v = v[w]
+	end
+	return v
+end
+
+function Lib:RestoreDefaultFromMap(map)
+	--get default first
+	local default = self:GetDefault(map)
+	--now update our mapping
+	if default ~= nil then
+		self:SetMapped(map, default)
+	end
+end
+
 function Lib:SetMapped(map, value)
 	local t = self.meta.container
 	for w, d in string.gfind(map, "([%w_]+)(.?)") do
@@ -908,6 +947,10 @@ function Lib:PrepareWindow()
 	self.wndMain:FindChild('Title'):SetText(self.meta.name)
 	self.wndMain:FindChild('Author'):SetText("Author: " .. self.meta.author or "")
 	self.wndMain:FindChild('Version'):SetText("Version: " ..self.meta.version or "")
+
+	if self.meta.defaults then
+		self.wndMain:FindChild('DefaultsButton'):Show(true, true)
+	end
 end
 
 function Lib:log(msg)
