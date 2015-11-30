@@ -11,11 +11,13 @@ uiMapper is a template-based UI generator for creating options and binding them 
 ### Developer Notes
 Currently, uiMapper is in developer pre-release. Although it has been tested in various environments and conditions and is out in the wild with the author's own addons, no guarantees can be made. At this time, please refrain from putting special characters in your variable names or categories, and avoid placing 'uiMapper_' in them as well, as the engine is currently hard coded to use that as a reference pointer to the ui elements.
 
+### Todo
 Some features I'd like to add when I get the time:
+   - Better Backdrop for transparent color swatches
    - Providing default values for easy reset of addon options
-   - sliders
+   - Slider control widgets
    - Changing dropdown boxes into grid windows
-   - overall code improvements and cleanup
+   - Overall code improvements and cleanup
 
 ## Screenshots
 ![Full Panel](http://puu.sh/lvKma/824f4029d9.png)
