@@ -6,6 +6,7 @@ uiMapper is a template-based UI generator for creating options and binding them 
 ### Changelog
 0.7
    - Added option to reset defaults by passing defaults param when calling :new()
+
 0.6
    - Fixed an issue where choicetables with boolean values weren't being detected
    - Added alpha slider option to the :color() method
