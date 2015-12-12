@@ -7,6 +7,7 @@ uiMapper is a template-based UI generator for creating options and binding them 
 0.8
    - Several layout adjustments to the base template
    - Fixed a potential issue where resetting defaults without any active options could cause a silent error
+
 0.7
    - Added option to reset defaults by passing defaults param when calling :new()
 
