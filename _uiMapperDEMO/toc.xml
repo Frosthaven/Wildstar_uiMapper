@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Addon Author="Frosthaven" APIVersion="11" Name="_uiMapperDEMO" Description="DEMO addon for uiMapper">
+	<!-- uiMapper -->
+    <Script Name="_uiMapper\core.lua"/>
+    <!-- /uiMapper -->
+
+    <Script Name="_uiMapperDEMO.lua"/>
+</Addon>
