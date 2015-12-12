@@ -4,6 +4,9 @@
 uiMapper is a template-based UI generator for creating options and binding them to data for use with Wildstar LUA addon development. This was originally an inside project for the addon developer Frosthaven, but has been made public for anyone who could find it useful.
 
 ### Changelog
+0.8
+   - Several layout adjustments to the base template
+   - Fixed a potential issue where resetting defaults without any active options could cause a silent error
 0.7
    - Added option to reset defaults by passing defaults param when calling :new()
 
