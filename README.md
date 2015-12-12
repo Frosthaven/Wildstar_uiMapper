@@ -2,6 +2,13 @@
 uiMapper is a template-based UI generator for creating options and binding them to data for use with Wildstar LUA addon development. This was originally an inside project for the addon developer Frosthaven, but has been made public for anyone who could find it useful.
 
 ### Changelog
+0.8
+   - Several layout adjustments to the base template
+   - Fixed a potential issue where resetting defaults without any active options could cause a silent error
+
+0.7
+   - Added option to reset defaults by passing defaults param when calling :new()
+
 0.6
    - Fixed an issue where choicetables with boolean values weren't being detected
    - Added alpha slider option to the :color() method
@@ -22,7 +29,7 @@ Some features I'd like to add when I get the time:
 ![Smaller Panel](http://puu.sh/lvE29/e8aa996f28.png)
 
 ## Installation
-1. Unzip a release of uiMapper into your addon's folder. The release consists of two files, **core.lua** and **panel.xml**
+1. Copy the _uiMapper folder from _uiMapperDEMO into your addon's folder. The release consists of two files, **core.lua** and **panel.xml**
    - The folder layout should be
    ```
    ../Wildstar/Addons/Myaddon/
@@ -51,7 +58,7 @@ Some features I'd like to add when I get the time:
         --etc
         
         local tDependencies = {
-           "uiMapper:0.6", --this name needs to match the name listed at the top of core.lua
+           "uiMapper:0.8", --this name needs to match the name listed at the top of core.lua
         }
         
         --etc
@@ -66,21 +73,25 @@ uiMapper works by registering your addon first, and then passing the workspace b
 function myaddon:OnLoad()
     --etc
     
-  local uiMapper = Apollo.GetPackage("uiMapper:0.6").tPackage
-  --change "uiMapper:0.6" to whatever you used in your dependancy check
+  local uiMapper = Apollo.GetPackage("uiMapper:0.8").tPackage
+  --change "uiMapper:0.8" to whatever you used in your dependancy check
   --which is what is found at the top of core.lua
   
   self.ui  = uiMapper:new({
     container = self,                     --this is where your addon settings are stored
+    defaults  = self.defaults             --the variable layout needs to match your container layout perfectly
     name      = "uiMapper Example",       --the name of the addon
     author    = "Frosthaven",             --the author of the addon
     version   = "1.1-dev",                --any version information about your addon
     slash     = "uiconfig"                --optional slash command to open the ui panel
     onshow    = function(ui)
-      --config panel opened               --optional onshow and onhide events
+      --config panel opened               --optional events: onshow, onhide, ondefault
     end,
     onhide    = function(ui)
       --config panel closed
+    end,
+    ondefault = function(ui)
+      --default settings have been applied
     end,
   }):build(function(ui)
       --this is your ui workspace
@@ -259,6 +270,7 @@ The optional alpha parameter defaults to false unless set to true, and enables a
 Not yet implimented
 
 ---
+## Examples
 ## Examples
 Currently, uiMapper is used in the following addons:
 
