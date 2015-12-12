@@ -1,4 +1,4 @@
-local MAJOR = "uiMapper:0.7"
+local MAJOR = "uiMapper:0.8"
 MINOR = 1
 --[[-------------------------------------------------------------------------------------------
 	Client Lua Script for _uiMapper
@@ -173,9 +173,11 @@ end
 function Lib:OnRestoreDefaultsConfirm(wndHandle)
 	--set our mapped values to our default values
 
-	for k, v in pairs(self.mappings) do
-		--does a default exist for this value?
-		self:RestoreDefaultFromMap(k)
+	if self.mappings then
+		for k, v in pairs(self.mappings) do
+			--does a default exist for this value?
+			self:RestoreDefaultFromMap(k)
+		end
 	end
 
 	--run any callbacks

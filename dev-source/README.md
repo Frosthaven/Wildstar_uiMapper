@@ -56,7 +56,7 @@ Some features I'd like to add when I get the time:
         --etc
         
         local tDependencies = {
-           "uiMapper:0.7", --this name needs to match the name listed at the top of core.lua
+           "uiMapper:0.8", --this name needs to match the name listed at the top of core.lua
         }
         
         --etc
@@ -71,8 +71,8 @@ uiMapper works by registering your addon first, and then passing the workspace b
 function myaddon:OnLoad()
     --etc
     
-  local uiMapper = Apollo.GetPackage("uiMapper:0.7").tPackage
-  --change "uiMapper:0.7" to whatever you used in your dependancy check
+  local uiMapper = Apollo.GetPackage("uiMapper:0.8").tPackage
+  --change "uiMapper:0.8" to whatever you used in your dependancy check
   --which is what is found at the top of core.lua
   
   self.ui  = uiMapper:new({
