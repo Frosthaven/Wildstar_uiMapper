@@ -1,4 +1,4 @@
-local MAJOR = "uiMapper:0.8.1"
+local MAJOR = "uiMapper:0.8.2"
 MINOR = 1
 --[[-------------------------------------------------------------------------------------------
 	Client Lua Script for _uiMapper
@@ -275,6 +275,7 @@ function Lib:OnComboButtonClick(wndHandle)
 			end
 
 			panel:ArrangeChildrenVert()
+			panel:SetVScrollPos(0)
 		end
 	end
 	if data.callbacks.onpopulated and type(data.callbacks.onpopulated) == 'function' then

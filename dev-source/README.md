@@ -4,6 +4,9 @@
 uiMapper is a template-based UI generator for creating options and binding them to data for use with Wildstar LUA addon development. This was originally an inside project for the addon developer Frosthaven, but has been made public for anyone who could find it useful.
 
 ### Changelog
+0.8.2
+   - Comboboxes will now reset the scroll position when being constructed
+
 0.8.1
    - Comboboxes will now automatically set to the first option if the addon provides an invalid choice
    
@@ -63,7 +66,7 @@ Some features I'd like to add when I get the time:
         --etc
         
         local tDependencies = {
-           "uiMapper:0.8.1", --this name needs to match the name listed at the top of core.lua
+           "uiMapper:0.8.2", --this name needs to match the name listed at the top of core.lua
         }
         
         --etc
@@ -78,8 +81,8 @@ uiMapper works by registering your addon first, and then passing the workspace b
 function myaddon:OnLoad()
     --etc
     
-  local uiMapper = Apollo.GetPackage("uiMapper:0.8.1").tPackage
-  --change "uiMapper:0.8.1" to whatever you used in your dependancy check
+  local uiMapper = Apollo.GetPackage("uiMapper:0.8.2").tPackage
+  --change "uiMapper:0.8.2" to whatever you used in your dependancy check
   --which is what is found at the top of core.lua
   
   self.ui  = uiMapper:new({
