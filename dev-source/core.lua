@@ -1,4 +1,4 @@
-local MAJOR = "uiMapper:0.8"
+local MAJOR = "uiMapper:0.8.1"
 MINOR = 1
 --[[-------------------------------------------------------------------------------------------
 	Client Lua Script for _uiMapper
@@ -173,11 +173,9 @@ end
 function Lib:OnRestoreDefaultsConfirm(wndHandle)
 	--set our mapped values to our default values
 
-	if self.mappings then
-		for k, v in pairs(self.mappings) do
-			--does a default exist for this value?
-			self:RestoreDefaultFromMap(k)
-		end
+	for k, v in pairs(self.mappings) do
+		--does a default exist for this value?
+		self:RestoreDefaultFromMap(k)
 	end
 
 	--run any callbacks
@@ -627,6 +625,7 @@ function Lib:combo(params)
 			button:SetName(self.conventions.controlPrefix .. params.map)
 
 			--lets set the initial button text to the mapped value's name
+			local foundSetting = false
 			for k, v in pairs(self.choices[params.choices]) do
 				--if there is no value, then set the value to the label
 				if v[2] == nil then v[2] = v[1] end
@@ -635,7 +634,15 @@ function Lib:combo(params)
 				if (v[2] == mValue) then
 					--we found the entry that matches
 					button:SetText(tostring(v[1]))
+					foundSetting = true
 				end
+			end
+			if not foundSetting then
+				--invalid setting found, lets use the first entry
+				--this can happen if an addon author removes a feature
+				--that was once available in the choicetable provided
+				button:SetText(tostring(self.choices[params.choices][1][1]))
+				self:SetMapped(params.map, self.choices[params.choices][1][2])
 			end
 
 			--save our mapping
