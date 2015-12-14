@@ -4,5 +4,6 @@
     <Script Name="_uiMapper\core.lua"/>
     <!-- /uiMapper -->
 
-    <Script Name="_uiMapperDEMO.lua"/>
+    <Script Name="main.lua"/>
+    <Script Name="settings.lua"/>
 </Addon>
