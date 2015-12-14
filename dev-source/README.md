@@ -287,7 +287,9 @@ ui:slider({
    end,
 })
 ```
-Not yet implimented
+This method creates a slider with manual input support.
+
+range is a required parameter, and can accept any negative or positive whole numbers separated by a single comma.
 
 ---
 
