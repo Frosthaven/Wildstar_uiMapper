@@ -11,7 +11,7 @@ require "Window"
 -- DEFINITION ---------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 local UIMAPPERDEMO = {
-	uiMapperLib = "uiMapper:0.8.2",
+	uiMapperLib = "uiMapper:0.9",
 	defaults = {},
 	config   = {},
 }
@@ -21,6 +21,7 @@ function UIMAPPERDEMO:GetDefaults()
 		checkboxExample = true,
 		inputExample    = "Hello World",
 		comboExample    = "Yellow",
+		sliderExample   = 0,
 
 		colorHexExample   = "FF0000",
 		colorRGBAExample  = {r=0,g=255,b=0,a=1},
@@ -116,6 +117,7 @@ function UIMAPPERDEMO:BuildConfig(ui)
 	ui:category("Control Widgets")
 	:header("Data-Mapped Widgets")
 	:note("These widgets automatically populate with the values they are mapped to from your addon's configuration. When the values are changed by the user, your addon's configuration is also updated.")
+	:pagedivider()
 	:check({
 		label = "Checkbox Example",
 		map   = "checkboxExample",
@@ -143,6 +145,14 @@ function UIMAPPERDEMO:BuildConfig(ui)
 		choices = "Foods",
 		onchange = function(wnd)
 			ui:log(wnd:GetText() .. " was chosen, so comboExample is now " .. tostring(self.config.comboExample))
+		end,
+	})
+	:slider({
+		label = "Slider Example",
+		map   = "sliderExample",
+		range = "-100,100",
+		onchange = function(wnd)
+			ui:log("sliderExample is now " .. self.config.sliderExample)
 		end,
 	})
 	:color({
@@ -176,6 +186,7 @@ function UIMAPPERDEMO:BuildConfig(ui)
 	})
 	:header("Extra Widgets")
 	:note("These are extra widgets that are not mapped to your addon's configuration but useful none the less")
+	:pagedivider()
 	:button({
 		label = "Button Example",
 		onclick = function(wnd)

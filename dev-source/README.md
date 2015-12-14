@@ -4,6 +4,10 @@
 uiMapper is a template-based UI generator for creating options and binding them to data for use with Wildstar LUA addon development. This was originally an inside project for the addon developer Frosthaven, but has been made public for anyone who could find it useful.
 
 ### Changelog
+0.9
+   - Added :slider() method
+   - Added :pagedivider() method
+
 0.8.2
    - Comboboxes will now reset the scroll position when being constructed
 
@@ -273,12 +277,20 @@ The optional alpha parameter defaults to false unless set to true, and enables a
 ---
 ### :slider(```{table}```)
 ```lua
-   --todo
+--sets variable to number value
+ui:slider({
+   label  = "Pick A Number",
+   map    = "numberPicked",
+   range  = "0,100"           --define the lowest and highest number
+   onchange = function(wndControl)
+      --the value of the slider has changed
+   end,
+})
 ```
 Not yet implimented
 
 ---
-## Examples
+
 ## Examples
 Currently, uiMapper is used in the following addons:
 

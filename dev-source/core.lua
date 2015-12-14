@@ -1,4 +1,4 @@
-local MAJOR = "uiMapper:0.8.2"
+local MAJOR = "uiMapper:0.9"
 MINOR = 1
 --[[-------------------------------------------------------------------------------------------
 	Client Lua Script for _uiMapper
@@ -240,6 +240,57 @@ function Lib:OnButtonClick(wndHandle)
 	local name = wndHandle:GetName()
 	if self.buttons[name] and type(self.buttons[name]) == 'function' then
 		self.buttons[name](wndHandle)
+	end
+end
+
+--slider
+function Lib:OnSliderUpdate(wndHandle)
+	local map = wndHandle:GetParent():GetName():gsub(self.conventions.controlPrefix,"")
+	local data = self:LookupMap(map)
+	local editbox = wndHandle:GetParent():FindChild("editbox")
+	local nValue = math.floor(tonumber(wndHandle:GetValue()))
+
+	editbox:SetText(nValue)
+
+	--update the user's variable
+	self:SetMapped(map, tonumber(nValue))
+
+	--callback
+	if data.callbacks.onchange and type(data.callbacks.onchange) == 'function' then
+		data.callbacks.onchange(wndHandle)
+	end
+end
+
+function Lib:OnSliderEditboxUpdate(wndHandle)
+	local map = wndHandle:GetParent():GetName():gsub(self.conventions.controlPrefix,"")
+	local data = self:LookupMap(map)
+	local slider = wndHandle:GetParent():FindChild("slider")
+	local nValue = tonumber(wndHandle:GetText())
+
+	--validate the input, but make sure we allow negative sign entry "-"
+	if wndHandle:GetText() == "-" then
+		nValue = data.lrange
+	else
+		if type(nValue) == "nil" then
+			nValue = data.hrange
+			wndHandle:SetText(data.hrange)
+		elseif nValue < tonumber(data.lrange) then
+			nValue = tonumber(data.lrange)
+			wndHandle:SetText(data.lrange)
+		elseif nValue > tonumber(data.hrange) then
+			nValue = tonumber(data.hrange)
+			wndHandle:SetText(data.hrange)
+		end
+	end
+
+	slider:SetValue(tonumber(nValue))
+
+	--update the user's variable
+	self:SetMapped(map, tonumber(nValue))
+
+	--callback
+	if data.callbacks.onchange and type(data.callbacks.onchange) == 'function' then
+		data.callbacks.onchange(wndHandle)
 	end
 end
 
@@ -607,6 +658,69 @@ function Lib:choicetable(name, list)
 	return self
 end
 
+--slider
+function Lib:slider(params)
+	self:CategoryCheck()
+	local page = self:GetPageByCategory(self.useCategory):FindChild("ContentRegion")
+	local control = Apollo.LoadForm(self.xmlDoc, "controlSlider", page, self)
+	if control then
+		local slider  = control:FindChild("slider")
+		local editbox = control:FindChild("editbox")
+		local label   = control:FindChild("label")
+
+		label:SetText(params.label)
+
+		local range = self:str_split(params.range)
+		local lrange = tonumber(range[1])
+		local hrange = tonumber(range[2])
+
+		slider:SetMinMax(tonumber(range[1]), tonumber(range[2]))
+
+		--map this control
+		if params.map then
+			local mValue = self:GetMapped(params.map)
+
+			--initialize the element
+			--for sliders we need to change the container name
+			slider:GetParent():SetName(self.conventions.controlPrefix .. params.map)
+
+			--validate the current value against the provided range
+			if type(tonumber(mValue)) == "nil" then
+				mValue = hrange
+			elseif mValue < lrange then
+				mValue = lrange
+			elseif mValue > hrange then
+				mValue = hrange
+			end
+			self:SetMapped(params.map, mValue)
+
+			editbox:SetText(mValue)
+			slider:SetValue(mValue)
+
+			--save our mapping
+			self:RegisterMap(params.map, {
+				ctype     = "slider",
+				value     = mValue,
+				label     = params.label,
+				lrange    = lrange,
+				hrange    = hrange,
+				callbacks = {
+					onchange = params.onchange,
+				},
+			})
+		end
+		page:ArrangeChildrenVert()
+	end
+
+	return self
+end
+
+--radiogroup
+function Lib:radiogroup(params)
+	self:CategoryCheck()
+	return self
+end
+
 --combobox / dropdown
 function Lib:combo(params)
 	self:CategoryCheck()
@@ -728,11 +842,22 @@ function Lib:color(params)
 	
 	return self
 end
+--page divider
+function Lib:pagedivider(params)
+	self:CategoryCheck()
+	local page = self:GetPageByCategory(self.useCategory):FindChild("ContentRegion")
+	local divider = Apollo.LoadForm(self.xmlDoc, "dividerPage", page, self)
+	if divider then
+		page:ArrangeChildrenVert()
+	end
+
+	return self
+end
 
 --nav divider
 function Lib:navdivider(params)
 	local navList = self.wndMain:FindChild("NavScroller")
-	local navItem = Apollo.LoadForm(self.xmlDoc, "NavSpacer", navList, self)
+	local navItem = Apollo.LoadForm(self.xmlDoc, "dividerNav", navList, self)
 	if navItem then
 		navItem:SetName(self.conventions.navPrefix .. "divider")
 		navList:ArrangeChildrenVert()
@@ -851,6 +976,13 @@ function Lib:HEXtoRGB(hexColor)
 	newColor.b = tonumber("0x"..hexColor:sub(5,6))
 	newColor.a = 1
     return newColor
+end
+
+function Lib:str_split(text, sep)
+	local sep, fields = sep or ",", {}
+	local pattern = string.format("([^%s]+)", sep)
+	text:gsub(pattern, function(c) fields[#fields+1] = c end)
+	return fields
 end
 
 function Lib:CategoryCheck()
