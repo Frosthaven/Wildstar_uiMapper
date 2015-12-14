@@ -157,6 +157,13 @@ ui:navdivider()
 This method adds a horizontal divider under your current category button in the navigation panel
 
 ---
+### :pagedivider()
+```lua
+ui:pagedivider()
+```
+This method adds a semi-transparent horizontal divider to the page for your current category
+
+---
 ### :header(```"string"```)
 ```lua
 ui:header("Display Options")
