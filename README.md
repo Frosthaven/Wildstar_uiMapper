@@ -29,8 +29,6 @@ Currently, uiMapper is in developer pre-release. Although it has been tested in 
 ### Todo
 Some features I'd like to add when I get the time:
    - Better Backdrop for transparent color swatches
-   - Providing default values for easy reset of addon options
-   - Slider control widgets
    - Changing dropdown boxes into grid windows
    - Overall code improvements and cleanup
 
